@@ -82,11 +82,11 @@ $app->run();
 ```
 
 Commands overview:
-* [composite:migrate](#composite-migrate) - generate and apply migrations
-* [composite:migrate-down](#composite-migrate-down]) - rollback migrations
-* [composite:migrate-new](#composite-migrate-new) - create blank migration
-* [composite:generate-entity](#composite-generate-entity) - generate Entity class from SQL table
-* [composite:generate-table](#composite-generate-table) - Generate Table class from Entity
+* [composite:migrate](#compositemigrate) - generate and apply migrations
+* [composite:migrate-down](#compositemigrate-down) - rollback migrations
+* [composite:migrate-new](#compositemigrate-new) - create blank migration
+* [composite:generate-entity](#compositegenerate-entity) - generate Entity class from SQL table
+* [composite:generate-table](#compositegenerate-table) - Generate Table class from Entity
 
 ## Migration commands
 
