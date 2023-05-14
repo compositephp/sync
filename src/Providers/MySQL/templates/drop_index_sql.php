@@ -1,0 +1,1 @@
+DROP INDEX `<?=$indexName?>` ON `<?=$tableName?>`;
