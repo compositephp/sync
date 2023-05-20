@@ -42,6 +42,18 @@ class MySQLTable extends AbstractSQLTable
             if ($entityColumn->getFirstAttributeByClass(SkipMigration::class)) {
                 continue;
             }
+            if ($tableConfig->hasUpdatedAt() && $entityColumn->name === 'updated_at') {
+                $columns[] = new MySQLColumn(
+                    name: 'updated_at',
+                    type: MySQLColumnType::TIMESTAMP,
+                    isNullable: false,
+                    hasDefaultValue: true,
+                    defaultValue: 'CURRENT_TIMESTAMP',
+                    fsp: 6,
+                    onUpdate: 'CURRENT_TIMESTAMP(6)',
+                );
+                continue;
+            }
             $columns[] = MySQLColumn::fromEntityColumn($entityColumn);
         }
         $indexes = [];

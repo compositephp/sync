@@ -138,8 +138,18 @@ class MySQLColumn extends AbstractSQLColumn
             $firstMoreElement = $more[0];
             if (!$size && $firstMoreElement === '(' && !empty($more[1]) && ($more[2] ?? null) === ')') {
                 $size = (int)$more[1];
-            } elseif (strtolower($firstMoreElement) === 'on update' && !empty($more[1])) {
+                array_splice($more, 0, 3);
+                $firstMoreElement = $more[0] ?? null;
+            }
+            if ($firstMoreElement && strtolower($firstMoreElement) === 'on update' && !empty($more[1])) {
                 $onUpdate = $more[1];
+                array_splice($more, 0, 2);
+                $firstMoreElement = $more[0] ?? null;
+            }
+            if ($firstMoreElement === '(' && !empty($more[1]) && ($more[2] ?? null) === ')') {
+                $onUpdate .= $more[0] . $more[1] . $more[2];
+                array_splice($more, 0, 3);
+                $firstMoreElement = $more[0] ?? null;
             }
         }
 
@@ -209,9 +219,6 @@ class MySQLColumn extends AbstractSQLColumn
      */
     private static function getIsNullable(AbstractColumn $entityColumn): bool
     {
-        if ($entityColumn->name === 'deleted_at') {
-            return false;
-        }
         return $entityColumn->isNullable;
     }
 
@@ -228,9 +235,6 @@ class MySQLColumn extends AbstractSQLColumn
         }
 
         $defaultValue = $entityColumn->defaultValue;
-        if ($entityColumn instanceof Columns\DateTimeColumn && $entityColumn->name === 'deleted_at') {
-            return DateTimeHelper::DEFAULT_TIMESTAMP_MICRO;
-        }
         if ($defaultValue === null) {
             return null;
         } elseif ($defaultValue instanceof \DateTimeInterface) {

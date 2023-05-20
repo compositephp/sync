@@ -52,6 +52,11 @@ class EntityClassBuilder
             $this->useNamespaces[] = 'Composite\DB\Traits';
             unset($constructorParams['deleted_at']);
         }
+        if ($this->sqlTable->getColumnByName('updated_at')) {
+            $traits[] = 'Traits\UpdatedAt';
+            $this->useNamespaces[] = 'Composite\DB\Traits';
+            unset($constructorParams['updated_at']);
+        }
         foreach ($constructorParams as $name => $constructorParam) {
             if ($this->sqlTable->getColumnByName($name)?->isAutoincrement) {
                 $properties[$name] = $constructorParam;
