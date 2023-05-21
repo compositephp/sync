@@ -2,6 +2,8 @@
 
 namespace Composite\Sync\Tests\Providers\MySQL;
 
+use Composite\DB\Traits\SoftDelete;
+use Composite\DB\Traits\UpdatedAt;
 use Composite\Sync\Attributes\SkipMigration;
 use Composite\DB\Attributes\{PrimaryKey, Table};
 use Composite\Sync\Providers\MySQL\MySQLComparator;
@@ -38,6 +40,8 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
         #[Index(columns: ['name'], isUnique: true)]
         #[Index(columns: ['name', 'created_at'])]
         class(1, 'Test') extends AbstractEntity {
+            use UpdatedAt;
+            use SoftDelete;
             public function __construct(
                 #[PrimaryKey]
                 public readonly int $id,
@@ -132,7 +136,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
             [
                 'entity' => $entityWithIndex,
                 'sql' => null,
-                'expectedNewColumns' => ['id', 'name', 'created_at'],
+                'expectedNewColumns' => ['id', 'name', 'created_at', 'updated_at', 'deleted_at'],
                 'expectedChangedColumns' => [],
                 'expectedNewIndexes' => [
                     new MySQLIndex(
@@ -156,6 +160,8 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                             `id` INT NOT NULL,
                             `name` VARCHAR(255) NOT NULL,
                             `created_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+                            `updated_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), 
+                            `deleted_at` TIMESTAMP(6) NULL DEFAULT NULL,
                             PRIMARY KEY (`id`),
                             UNIQUE KEY `FooI_unq_name` (`name`),
                             KEY `FooI_idx_name_created_at` (`name`,`created_at`)
@@ -173,6 +179,8 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                         `id` INT NOT NULL,
                         `name` VARCHAR(255) NOT NULL,
                         `created_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+                        `updated_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), 
+                            `deleted_at` TIMESTAMP(6) NULL DEFAULT NULL,
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `FooI_unq_name` (`name`),
                         KEY `FooI_idx_name_created_at` (`name`,`created_at`)
@@ -193,6 +201,8 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                         `id` INT NOT NULL,
                         `name` VARCHAR(255) NOT NULL,
                         `created_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+                        `updated_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), 
+                        `deleted_at` TIMESTAMP(6) NULL DEFAULT NULL,
                         PRIMARY KEY (`name`),
                         KEY `FooI_idx_created_at` (`created_at`)
                     ) ENGINE=InnoDB COLLATE=utf8mb4_unicode_ci;
@@ -242,6 +252,8 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                         `id` INT NOT NULL,
                         `name` VARCHAR(128) NOT NULL,
                         `created_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+                        `updated_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), 
+                        `deleted_at` TIMESTAMP(6) NULL DEFAULT NULL,
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `FooI_unq_name` (`name`),
                         KEY `FooI_idx_created_name_at` (`created_at`, `name`)
