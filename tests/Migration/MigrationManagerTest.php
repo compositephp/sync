@@ -23,7 +23,7 @@ final class MigrationManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedResult, $migrationName);
     }
 
-    public function migrationName_dataProvider(): array
+    public static function migrationName_dataProvider(): array
     {
         $timestamp = date('ymdhis');
         $prefix = 'Migration_' . $timestamp;
@@ -52,7 +52,7 @@ final class MigrationManagerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function flow_dataProvider(): array
+    public static function flow_dataProvider(): array
     {
         return [
             ['mysql'],

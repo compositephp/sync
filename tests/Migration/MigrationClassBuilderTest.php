@@ -20,7 +20,7 @@ final class MigrationClassBuilderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedResult, $builder->getFileContent());
     }
 
-    public function migrationName_dataProvider(): array
+    public static function migrationName_dataProvider(): array
     {
         $timestamp = date('ymdhis');
         $prefix = 'Migration_' . $timestamp;

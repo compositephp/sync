@@ -17,7 +17,7 @@ final class EnumClassBuilderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedOutput, $actualOutput);
     }
 
-    public function enumClassBuilder_dataProvider(): array
+    public static function enumClassBuilder_dataProvider(): array
     {
         return [
             'valid_cases' => [

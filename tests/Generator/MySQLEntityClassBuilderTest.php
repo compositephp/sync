@@ -40,7 +40,7 @@ final class MySQLEntityClassBuilderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedOutput, $actualOutput);
     }
 
-    public function sql_dataProvider(): array
+    public static function sql_dataProvider(): array
     {
         return [
             [

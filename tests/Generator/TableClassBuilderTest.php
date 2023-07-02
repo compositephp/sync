@@ -22,7 +22,7 @@ final class TableClassBuilderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedOutput, $actualOutput);
     }
 
-    public function classBuilder_dataProvider(): array
+    public static function classBuilder_dataProvider(): array
     {
         return [
             [

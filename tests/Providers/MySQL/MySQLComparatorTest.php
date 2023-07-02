@@ -18,7 +18,7 @@ use Composite\Sync\Tests\TestStand\Entities;
 
 final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
 {
-    public function run_dataProvider(): array
+    public static function run_dataProvider(): array
     {
         $simpleEntity = new
         #[Table(connection: 'mysql', name: 'Foo')]

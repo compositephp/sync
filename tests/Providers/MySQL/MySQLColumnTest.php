@@ -8,7 +8,7 @@ use iamcal\SQLParser;
 
 final class MySQLColumnTest extends \PHPUnit\Framework\TestCase
 {
-    public function sqlColumn_DataProvider(): array
+    public static function sqlColumn_DataProvider(): array
     {
         return [
             [

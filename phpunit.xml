@@ -1,7 +1,22 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpunit
-        bootstrap="./tests/bootstrap.php"
-        verbose="true"
-        colors="true"
->
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd" bootstrap="tests/bootstrap.php"
+         executionOrder="depends,defects" beStrictAboutOutputDuringTests="true" failOnRisky="true" failOnWarning="true"
+         colors="true" cacheDirectory=".phpunit.cache" requireCoverageMetadata="false"
+         beStrictAboutCoverageMetadata="true">
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <report>
+            <html outputDirectory=".phpunit.cache"/>
+        </report>
+    </coverage>
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </source>
 </phpunit>

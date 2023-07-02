@@ -10,7 +10,7 @@ use iamcal\SQLParser;
 
 final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
 {
-    public function indexDataProvider(): array
+    public static function index_dataProvider(): array
     {
         return [
             [
@@ -117,7 +117,7 @@ final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider indexDataProvider
+     * @dataProvider index_dataProvider
      */
     public function testParseSQLColumn(string $sql, MySQLIndex $expected): void
     {
