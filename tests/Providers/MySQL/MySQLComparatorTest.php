@@ -15,6 +15,7 @@ use Composite\DB\TableConfig;
 use Composite\Entity\AbstractEntity;
 use Composite\Sync\Attributes\Index;
 use Composite\Sync\Tests\TestStand\Entities;
+use Composite\DB\Traits;
 
 final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
 {
@@ -58,6 +59,18 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                 public readonly string $id,
                 public ?string $str1,
                 public ?string $str2 = null,
+            ) {}
+        };
+
+        $traitsEntity = new
+        #[Table(connection: 'mysql', name: 'Traits')]
+        class('a') extends AbstractEntity {
+            use Traits\UpdatedAt;
+            use Traits\SoftDelete;
+
+            public function __construct(
+                #[PrimaryKey]
+                public readonly string $id,
             ) {}
         };
 
@@ -566,6 +579,28 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                 'expectedPrimaryKeyChanged' => false,
                 'expectedUpQueries' => [],
                 'expectedDownQueries' => [],
+            ],
+            [
+                'entity' => $traitsEntity,
+                'sql' => null,
+                'expectedNewColumns' => ['id', 'updated_at', 'deleted_at'],
+                'expectedChangedColumns' => [],
+                'expectedNewIndexes' => [],
+                'expectedDeletedIndexes' => [],
+                'expectedPrimaryKeyChanged' => false,
+                'expectedUpQueries' => [
+                    <<<SQL
+                        CREATE TABLE `Traits` (
+                            `id` VARCHAR(255) NOT NULL,
+                            `updated_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+                            `deleted_at` TIMESTAMP(6) NULL DEFAULT NULL,
+                            PRIMARY KEY (`id`)
+                       ) ENGINE=InnoDB COLLATE=utf8mb4_unicode_ci;
+                    SQL,
+                ],
+                'expectedDownQueries' => [
+                    'DROP TABLE IF EXISTS `Traits`;'
+                ],
             ],
         ];
     }
