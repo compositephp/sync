@@ -79,7 +79,7 @@ enum MySQLColumnType
             Columns\FloatColumn::class => self::FLOAT,
             Columns\DateTimeColumn::class => self::TIMESTAMP,
             Columns\IntegerColumn::class, Columns\BackedIntEnumColumn::class => self::INT,
-            Columns\StringColumn::class, Columns\CastableColumn::class => self::VARCHAR,
+            Columns\StringColumn::class, Columns\UuidColumn::class, Columns\CastableColumn::class => self::VARCHAR,
             Columns\BackedStringEnumColumn::class, Columns\UnitEnumColumn::class => self::ENUM,
             Columns\ArrayColumn::class, Columns\ObjectColumn::class, Columns\EntityColumn::class, Columns\EntityListColumn::class => self::JSON,
             default => throw new \Exception(sprintf("Column class `%s` is not supported", $column::class)),

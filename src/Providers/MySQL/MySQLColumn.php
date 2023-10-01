@@ -206,12 +206,12 @@ class MySQLColumn extends AbstractSQLColumn
         if ($attribute?->size > 0) {
             return $attribute->size;
         }
-        if ($entityColumn instanceof Columns\BoolColumn) {
-            return 1;
-        } elseif ($entityColumn instanceof Columns\StringColumn || $entityColumn instanceof Columns\CastableColumn) {
-            return 255;
-        }
-        return null;
+        return match ($entityColumn::class) {
+            Columns\BoolColumn::class => 1,
+            Columns\UuidColumn::class => 32,
+            Columns\StringColumn::class, Columns\CastableColumn::class => 255,
+            default => null,
+        };
     }
 
     /**
