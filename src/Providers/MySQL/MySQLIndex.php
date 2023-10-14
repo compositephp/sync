@@ -31,14 +31,12 @@ class MySQLIndex extends AbstractSQLIndex
      */
     public static function fromEntityAttribute(string $tableName, Attributes\Index $attribute): self
     {
-        $columns = array_is_list($attribute->columns) ? $attribute->columns : array_keys($attribute->columns);
-        $order = self::getOrder($attribute);
         return new MySQLIndex(
             type: $attribute->isUnique ? MySQLIndexType::UNIQUE : MySQLIndexType::INDEX,
-            name: $attribute->name ?: self::generateIndexName($tableName, $attribute->isUnique, $columns, $order),
-            columns: $columns,
+            name: $attribute->name ?: self::generateIndexName($tableName, $attribute),
+            columns: $attribute->getColumns(),
             isUnique: $attribute->isUnique,
-            order: $order,
+            order: $attribute->getSort(),
         );
     }
 
@@ -69,36 +67,14 @@ class MySQLIndex extends AbstractSQLIndex
         );
     }
 
-    private static function getOrder(Attributes\Index $index): array
-    {
-        $columns = $index->columns;
-        if (array_is_list($columns)) {
-            return [];
-        }
-        $result = [];
-        foreach ($columns as $columnName => $order) {
-            $order = strtoupper($order);
-            if ($order !== 'ASC' && $order !== 'DESC') {
-                throw new \Exception(sprintf("Unknown order `%s` in index column `%s`", $order, $columns[$columnName]));
-            }
-            $result[$columnName] = $order;
-        }
-        return $result;
-    }
-
-    private static function generateIndexName(string $tableName, bool $isUnique, array $columns, array $order): string
+    private static function generateIndexName(string $tableName, Attributes\Index $attribute): string
     {
         $parts = [
             $tableName,
-            $isUnique ? 'unq' : 'idx',
+            $attribute->isUnique ? 'unq' : 'idx',
         ];
-        if ($order) {
-            foreach ($order as $columnName => $orderDir) {
-                $parts[] = strtolower($columnName);
-                $parts[] = strtolower($orderDir);
-            }
-        } else {
-            $parts = array_merge($parts, array_map('strtolower', $columns));
+        foreach ($attribute->getColumns() as $columnName) {
+            $parts[] = strtolower($columnName);
         }
         return implode('_', $parts);
     }
@@ -160,14 +136,16 @@ class MySQLIndex extends AbstractSQLIndex
 
     private function getSqlColumnsString(): string
     {
-        if ($this->order) {
-            $columns = [];
-            foreach ($this->order as $columnName => $order) {
-                $columns[] = "`$columnName` $order";
+        $parts = [];
+        $hasDesc = in_array('DESC', $this->order);
+        foreach ($this->columns as $columnName) {
+            $part = "`$columnName`";
+            if ($hasDesc) {
+                $sort = $this->order[$columnName] ?? 'ASC';
+                $part .= " $sort";
             }
-        } else {
-            $columns = array_map(fn ($column) => "`$column`", $this->columns);
+            $parts[] = $part;
         }
-        return '(' . implode(',', $columns) . ')';
+        return '(' . implode(',', $parts) . ')';
     }
 }

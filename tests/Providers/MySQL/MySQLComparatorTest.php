@@ -39,7 +39,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
         $entityWithIndex = new
         #[Table(connection: 'mysql', name: 'FooI')]
         #[Index(columns: ['name'], isUnique: true)]
-        #[Index(columns: ['name', 'created_at'])]
+        #[Index(columns: ['name', 'created_at' => 'DESC'])]
         class(1, 'Test') extends AbstractEntity {
             use UpdatedAt;
             use SoftDelete;
@@ -163,6 +163,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                         name: 'FooI_idx_name_created_at',
                         columns: ['name', 'created_at'],
                         isUnique: false,
+                        order: ['name' => 'ASC', 'created_at' => 'DESC'],
                     ),
                 ],
                 'expectedDeletedIndexes' => [],
@@ -177,7 +178,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                             `deleted_at` TIMESTAMP(6) NULL DEFAULT NULL,
                             PRIMARY KEY (`id`),
                             UNIQUE KEY `FooI_unq_name` (`name`),
-                            KEY `FooI_idx_name_created_at` (`name`,`created_at`)
+                            KEY `FooI_idx_name_created_at` (`name` ASC,`created_at` DESC)
                         ) ENGINE=InnoDB COLLATE=utf8mb4_unicode_ci;
                     SQL,
                 ],
@@ -196,7 +197,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                             `deleted_at` TIMESTAMP(6) NULL DEFAULT NULL,
                         PRIMARY KEY (`id`),
                         UNIQUE KEY `FooI_unq_name` (`name`),
-                        KEY `FooI_idx_name_created_at` (`name`,`created_at`)
+                        KEY `FooI_idx_name_created_at` (`name` ASC, `created_at` DESC)
                     ) ENGINE=InnoDB COLLATE=utf8mb4_unicode_ci;
                 SQL,
                 'expectedNewColumns' => [],
@@ -234,6 +235,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                         name: 'FooI_idx_name_created_at',
                         columns: ['name', 'created_at'],
                         isUnique: false,
+                        order: ['name' => 'ASC', 'created_at' => 'DESC'],
                     ),
                 ],
                 'expectedDeletedIndexes' => [
@@ -249,7 +251,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                     'ALTER TABLE `FooI` DROP PRIMARY KEY, ADD PRIMARY KEY(`id`);',
                     'DROP INDEX `FooI_idx_created_at` ON `FooI`;',
                     'CREATE UNIQUE KEY `FooI_unq_name` ON `FooI` (`name`);',
-                    'CREATE INDEX `FooI_idx_name_created_at` ON `FooI` (`name`,`created_at`);',
+                    'CREATE INDEX `FooI_idx_name_created_at` ON `FooI` (`name` ASC,`created_at` DESC);',
                 ],
                 'expectedDownQueries' => [
                     'ALTER TABLE `FooI` DROP PRIMARY KEY, ADD PRIMARY KEY(`name`);',
@@ -280,6 +282,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                         name: 'FooI_idx_name_created_at',
                         columns: ['name', 'created_at'],
                         isUnique: false,
+                        order: ['name' => 'ASC', 'created_at' => 'DESC'],
                     ),
                 ],
                 'expectedDeletedIndexes' => [
@@ -294,7 +297,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                 'expectedUpQueries' => [
                     'ALTER TABLE `FooI` MODIFY `name` VARCHAR(255) NOT NULL;',
                     'DROP INDEX `FooI_idx_created_name_at` ON `FooI`;',
-                    'CREATE INDEX `FooI_idx_name_created_at` ON `FooI` (`name`,`created_at`);',
+                    'CREATE INDEX `FooI_idx_name_created_at` ON `FooI` (`name` ASC,`created_at` DESC);',
                 ],
                 'expectedDownQueries' => [
                     'ALTER TABLE `FooI` MODIFY `name` VARCHAR(128) NOT NULL;',

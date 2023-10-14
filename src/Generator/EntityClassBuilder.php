@@ -239,18 +239,19 @@ class EntityClassBuilder
     {
         $result = [];
         foreach ($this->sqlTable->indexes as $index) {
+            $attributeIndexColumns = [];
+            foreach ($index->columns as $columnName) {
+                if (isset($index->order[$columnName]) && strtoupper($index->order[$columnName]) === 'DESC') {
+                    $attributeIndexColumns[] = "'$columnName' => 'DESC'";
+                } else {
+                    $attributeIndexColumns[] = "'$columnName'";
+                }
+            }
             $properties = [
-                "columns: ['" . implode("', '", $index->columns) . "']",
+                "columns: [" . implode(", ", $attributeIndexColumns) . "]",
             ];
             if ($index->isUnique) {
                 $properties[] = "isUnique: true";
-            }
-            if ($index->order) {
-                $sortParts = [];
-                foreach ($index->order as $key => $direction) {
-                    $sortParts[] = "'$key' => '$direction'";
-                }
-                $properties[] = 'sort: [' . implode(', ', $sortParts) . ']';
             }
             if ($index->name) {
                 $properties[] = "name: '" . $index->name . "'";

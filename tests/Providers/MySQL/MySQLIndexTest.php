@@ -20,7 +20,6 @@ final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
                     name: 'example1_idx',
                     columns: ['column1', 'column2'],
                     isUnique: false,
-                    order: []
                 )
             ],
             [
@@ -30,7 +29,6 @@ final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
                     name: 'example2_uindex',
                     columns: ['column3'],
                     isUnique: true,
-                    order: []
                 )
             ],
             [
@@ -40,7 +38,6 @@ final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
                     name: 'example3_ftindex',
                     columns: ['column4'],
                     isUnique: false,
-                    order: []
                 )
             ],
             [
@@ -50,7 +47,6 @@ final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
                     name: '',
                     columns: ['column5'],
                     isUnique: true,
-                    order: []
                 )
             ],
             [
@@ -80,7 +76,6 @@ final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
                     name: 'example6_ftindex',
                     columns: ['column10', 'column11'],
                     isUnique: false,
-                    order: []
                 )
             ],
             [
@@ -90,17 +85,15 @@ final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
                     name: '',
                     columns: ['column12', 'column13'],
                     isUnique: true,
-                    order: []
                 )
             ],
             [
-                "KEY `example7_idx` (`column14` ASC)",
+                "KEY `example7_idx` (`column14`)",
                 new MySQLIndex(
                     type: MySQLIndexType::INDEX,
                     name: 'example7_idx',
                     columns: ['column14'],
                     isUnique: false,
-                    order: ['column14' => 'ASC']
                 )
             ],
             [

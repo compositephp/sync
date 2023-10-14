@@ -107,7 +107,7 @@ class TestEntity extends AbstractEntity
                     `preferences` json DEFAULT NULL,
                     `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                     PRIMARY KEY (`student_id`, `course_id`),
-                    KEY `idx_enrollment_date` (`enrollment_date`)
+                    KEY `idx_enrollment_date_age` (`enrollment_date`, `age` DESC)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
                 ",
                 'App\TestEntity',
@@ -124,7 +124,7 @@ use Composite\Entity\AbstractEntity;
 use App\Enums\Gender;
 
 #[Table(connection: \'mysql\', name: \'test_table2\')]
-#[Index(columns: [\'enrollment_date\'], name: \'idx_enrollment_date\')]
+#[Index(columns: [\'enrollment_date\', \'age\' => \'DESC\'], name: \'idx_enrollment_date_age\')]
 class TestEntity extends AbstractEntity
 {
     public function __construct(
