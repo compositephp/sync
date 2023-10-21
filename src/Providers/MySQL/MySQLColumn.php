@@ -208,7 +208,7 @@ class MySQLColumn extends AbstractSQLColumn
         }
         return match ($entityColumn::class) {
             Columns\BoolColumn::class => 1,
-            Columns\UuidColumn::class => 32,
+            Columns\UuidColumn::class => 36,
             Columns\StringColumn::class, Columns\CastableColumn::class => 255,
             default => null,
         };
