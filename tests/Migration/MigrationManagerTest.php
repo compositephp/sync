@@ -20,13 +20,12 @@ final class MigrationManagerTest extends \PHPUnit\Framework\TestCase
     public function test_buildMigrationName(string $connectionName, array $summaryParts, string $expectedResult)
     {
         $migrationName = MigrationsManager::buildMigrationName($connectionName, $summaryParts);
-        $this->assertEquals($expectedResult, $migrationName);
+        $this->assertMatchesRegularExpression('/^'.$expectedResult . '$/', $migrationName);
     }
 
     public static function migrationName_dataProvider(): array
     {
-        $timestamp = date('ymdhis');
-        $prefix = 'Migration_' . $timestamp;
+        $prefix = 'Migration_(\d{12})';
 
         return [
             'No summary parts' => [
