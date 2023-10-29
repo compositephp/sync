@@ -59,7 +59,7 @@ class MySQLColumn extends AbstractSQLColumn
      */
     public static function fromEntityColumn(AbstractColumn $entityColumn): self
     {
-        $columnAttribute = $entityColumn->getFirstAttributeByClass(Column::class);
+        $columnAttribute = self::getColumnAttribute($entityColumn);
         $primaryKeyAttribute = $entityColumn->getFirstAttributeByClass(PrimaryKey::class);
         $isAutoIncrement = $primaryKeyAttribute?->autoIncrement ?? false;
         $type = $columnAttribute?->type ?

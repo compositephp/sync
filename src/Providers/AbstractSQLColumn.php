@@ -3,6 +3,9 @@
 namespace Composite\Sync\Providers;
 
 use Composite\Entity\Columns\AbstractColumn;
+use Composite\Entity\Columns\CastableColumn;
+use Composite\Entity\Columns\EntityColumn;
+use Composite\Sync\Attributes\Column;
 
 abstract class AbstractSQLColumn
 {
@@ -49,5 +52,21 @@ abstract class AbstractSQLColumn
             $result[] = 'scale: ' . $this->scale;
         }
         return $result;
+    }
+
+    public static function getColumnAttribute(AbstractColumn $entityColumn): ?Column
+    {
+        if ($attribute = $entityColumn->getFirstAttributeByClass(Column::class)) {
+            return $attribute;
+        }
+        $columnIsClass = $entityColumn instanceof CastableColumn || $entityColumn instanceof EntityColumn;
+        if (!$columnIsClass) {
+            return null;
+        }
+        $reflection = new \ReflectionClass($entityColumn->type);
+        foreach ($reflection->getAttributes(Column::class) as $attribute) {
+            return $attribute->newInstance();
+        }
+        return null;
     }
 }

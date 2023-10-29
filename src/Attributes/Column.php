@@ -2,7 +2,7 @@
 
 namespace Composite\Sync\Attributes;
 
-#[\Attribute(\Attribute::TARGET_PARAMETER | \Attribute::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PARAMETER | \Attribute::TARGET_PROPERTY | \Attribute::TARGET_CLASS)]
 class Column
 {
     public function __construct(
