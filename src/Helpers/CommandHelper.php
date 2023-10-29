@@ -86,4 +86,9 @@ trait CommandHelper
         }
         return $connectionName;
     }
+
+    protected function clear(): void
+    {
+        system('clear');
+    }
 }
