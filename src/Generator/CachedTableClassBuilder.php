@@ -64,9 +64,9 @@ class CachedTableClassBuilder extends AbstractTableClassBuilder
             $this->tableConfig->primaryKeys
         );
         if (count($this->tableConfig->primaryKeys) === 1) {
-            $body = 'return $this->createEntity($this->findByPkCachedInternal(' . $this->buildVarsList($this->tableConfig->primaryKeys) . '));';
+            $body = 'return $this->_findByPkCached(' . $this->buildVarsList($this->tableConfig->primaryKeys) . ');';
         } else {
-            $body = 'return $this->createEntity($this->findOneCachedInternal(' . $this->buildVarsList($this->tableConfig->primaryKeys) . '));';
+            $body = 'return $this->_findOneCached(' . $this->buildVarsList($this->tableConfig->primaryKeys) . ');';
         }
 
         $method = (new Method('findByPk'))
@@ -84,7 +84,7 @@ class CachedTableClassBuilder extends AbstractTableClassBuilder
             ->setPublic()
             ->setComment('@return ' . $this->entityClassShortName . '[]')
             ->setReturnType('array')
-            ->setBody('return $this->createEntities($this->findAllCachedInternal());');
+            ->setBody('return $this->_findAllCached();');
     }
 
     protected function generateCountAll(): Method
@@ -92,6 +92,6 @@ class CachedTableClassBuilder extends AbstractTableClassBuilder
         return (new Method('countAll'))
             ->setPublic()
             ->setReturnType('int')
-            ->setBody('return $this->countAllCachedInternal();');
+            ->setBody('return $this->_countAllCached();');
     }
 }

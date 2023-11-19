@@ -48,7 +48,7 @@ class Table extends AbstractTable
 
 	public function findByPk(int $id): ?TestAutoincrementEntity
 	{
-		return $this->createEntity($this->findByPkInternal($id));
+		return $this->_findByPk($id);
 	}
 
 
@@ -57,13 +57,13 @@ class Table extends AbstractTable
 	 */
 	public function findAll(): array
 	{
-		return $this->createEntities($this->findAllInternal());
+		return $this->_findAll();
 	}
 
 
 	public function countAll(): int
 	{
-		return $this->countAllInternal();
+		return $this->_countAll();
 	}
 }
 '
@@ -89,7 +89,7 @@ class CompositeTable extends AbstractTable
 
 	public function findByPk(int $user_id, int $post_id): ?TestCompositeEntity
 	{
-		return $this->createEntity($this->findOneInternal([\'user_id\' => $user_id, \'post_id\' => $post_id]));
+		return $this->_findOne([\'user_id\' => $user_id, \'post_id\' => $post_id]);
 	}
 
 
@@ -98,13 +98,13 @@ class CompositeTable extends AbstractTable
 	 */
 	public function findAll(): array
 	{
-		return $this->createEntities($this->findAllInternal());
+		return $this->_findAll();
 	}
 
 
 	public function countAll(): int
 	{
-		return $this->countAllInternal();
+		return $this->_countAll();
 	}
 }
 '

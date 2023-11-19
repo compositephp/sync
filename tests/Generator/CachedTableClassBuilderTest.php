@@ -56,7 +56,7 @@ class Table extends AbstractCachedTable
 
 	public function findByPk(int $id): ?TestAutoincrementEntity
 	{
-		return $this->createEntity($this->findByPkCachedInternal($id));
+		return $this->_findByPkCached($id);
 	}
 
 
@@ -65,13 +65,13 @@ class Table extends AbstractCachedTable
 	 */
 	public function findAll(): array
 	{
-		return $this->createEntities($this->findAllCachedInternal());
+		return $this->_findAllCached();
 	}
 
 
 	public function countAll(): int
 	{
-		return $this->countAllCachedInternal();
+		return $this->_countAllCached();
 	}
 }
 '
@@ -105,7 +105,7 @@ class CompositeTable extends AbstractCachedTable
 
 	public function findByPk(int $user_id, int $post_id): ?TestCompositeEntity
 	{
-		return $this->createEntity($this->findOneCachedInternal([\'user_id\' => $user_id, \'post_id\' => $post_id]));
+		return $this->_findOneCached([\'user_id\' => $user_id, \'post_id\' => $post_id]);
 	}
 
 
@@ -114,13 +114,13 @@ class CompositeTable extends AbstractCachedTable
 	 */
 	public function findAll(): array
 	{
-		return $this->createEntities($this->findAllCachedInternal());
+		return $this->_findAllCached();
 	}
 
 
 	public function countAll(): int
 	{
-		return $this->countAllCachedInternal();
+		return $this->_countAllCached();
 	}
 }
 '

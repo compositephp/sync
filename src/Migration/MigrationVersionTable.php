@@ -28,7 +28,7 @@ class MigrationVersionTable extends \Composite\DB\AbstractTable
 
     public function checkMigrationExecuted(string $version): bool
     {
-        return (bool)$this->findOneInternal(['version' => $version]);
+        return (bool)$this->_findOne(['version' => $version]);
     }
 
     /**
@@ -36,7 +36,7 @@ class MigrationVersionTable extends \Composite\DB\AbstractTable
      */
     public function findAll(): array
     {
-        return $this->createEntities($this->findAllInternal(orderBy: ['executed_at' => 'DESC']));
+        return $this->_findAll(orderBy: ['executed_at' => 'DESC']);
     }
 
     public function insertVersion(AbstractMigration $migration): void
@@ -70,7 +70,7 @@ class MigrationVersionTable extends \Composite\DB\AbstractTable
 
     public function deleteVersion(AbstractMigration $migration): void
     {
-        $entity = $this->createEntity($this->findOneInternal(['version' => $migration->getName()]));
+        $entity = $this->_findOne(['version' => $migration->getName()]);
         $nativeConnection = $this->getConnection()->getNativeConnection();
         if ($nativeConnection instanceof \PDO) {
             try {

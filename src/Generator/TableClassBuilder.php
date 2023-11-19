@@ -45,9 +45,9 @@ class TableClassBuilder extends AbstractTableClassBuilder
             $this->tableConfig->primaryKeys
         );
         if (count($this->tableConfig->primaryKeys) === 1) {
-            $body = 'return $this->createEntity($this->findByPkInternal(' . $this->buildVarsList($this->tableConfig->primaryKeys) . '));';
+            $body = 'return $this->_findByPk(' . $this->buildVarsList($this->tableConfig->primaryKeys) . ');';
         } else {
-            $body = 'return $this->createEntity($this->findOneInternal(' . $this->buildVarsList($this->tableConfig->primaryKeys) . '));';
+            $body = 'return $this->_findOne(' . $this->buildVarsList($this->tableConfig->primaryKeys) . ');';
         }
         $method = (new Method('findByPk'))
             ->setPublic()
@@ -64,7 +64,7 @@ class TableClassBuilder extends AbstractTableClassBuilder
             ->setPublic()
             ->setComment('@return ' . $this->entityClassShortName . '[]')
             ->setReturnType('array')
-            ->setBody('return $this->createEntities($this->findAllInternal());');
+            ->setBody('return $this->_findAll();');
     }
 
     protected function generateCountAll(): Method
@@ -72,6 +72,6 @@ class TableClassBuilder extends AbstractTableClassBuilder
         return (new Method('countAll'))
             ->setPublic()
             ->setReturnType('int')
-            ->setBody('return $this->countAllInternal();');
+            ->setBody('return $this->_countAll();');
     }
 }

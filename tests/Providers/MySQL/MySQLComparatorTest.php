@@ -331,7 +331,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
             [
                 'entity' => new Entities\TestOptimisticLockEntity( 'a'),
                 'sql' => null,
-                'expectedNewColumns' => ['id', 'name', 'created_at', 'version'],
+                'expectedNewColumns' => ['id', 'name', 'created_at', 'lock_version'],
                 'expectedChangedColumns' => [],
                 'expectedNewIndexes' => [],
                 'expectedDeletedIndexes' => [],
@@ -342,7 +342,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
                             `id` INT NOT NULL AUTO_INCREMENT,
                             `name` VARCHAR(255) NOT NULL,
                             `created_at` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-                            `version` INT NOT NULL DEFAULT 1,
+                            `lock_version` INT NOT NULL DEFAULT 1,
                             PRIMARY KEY (`id`)
                         ) ENGINE=InnoDB COLLATE=utf8mb4_unicode_ci;
                     SQL,

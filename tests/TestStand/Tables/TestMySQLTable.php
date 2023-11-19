@@ -15,6 +15,6 @@ class TestMySQLTable extends AbstractTable
 
     public function findByPk(int $id): ?TestMigrationEntityV1
     {
-        return $this->createEntity($this->findByPkInternal($id));
+        return $this->_findByPk($id);
     }
 }
