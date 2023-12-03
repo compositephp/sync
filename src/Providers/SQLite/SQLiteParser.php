@@ -16,7 +16,7 @@ class SQLiteParser
     private const ENUM_PATTERN = '/check \((?:`|\"|\')?(\w+)(?:`|\"|\')? in \((.+)\)\)/i';
 
     private readonly string $tableName;
-    private readonly string $tableSql;
+    private readonly ?string $tableSql;
     private readonly array $indexesSql;
 
     public function __construct(
@@ -27,15 +27,18 @@ class SQLiteParser
         $this->tableSql = $connection->executeQuery(
             sql: self::TABLE_SQL,
             params: ['tableName' => $tableName],
-        )->fetchOne();
+        )->fetchOne() ?: null;
         $this->indexesSql = $connection->executeQuery(
             sql: self::INDEXES_SQL,
             params: ['tableName' => $tableName],
         )->fetchFirstColumn();
     }
 
-    public function getSQLTable(): AbstractSQLTable
+    public function getSQLTable(): ?AbstractSQLTable
     {
+        if (!$this->tableSql) {
+            return null;
+        }
         $columns = $enums = $primaryKeys = [];
         $columnsStarted = false;
         $lines = array_map(
