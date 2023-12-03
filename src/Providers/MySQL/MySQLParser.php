@@ -4,7 +4,7 @@ namespace Composite\Sync\Providers\MySQL;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\TableNotFoundException;
-use iamcal\SQLParser;
+use Composite\Sync\Helpers\SQLParser;
 
 class MySQLParser
 {
