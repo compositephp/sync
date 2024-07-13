@@ -87,6 +87,18 @@ trait CommandHelper
         return $connectionName;
     }
 
+    protected function showPressAnyKeyToContinue(?string $text = null): void
+    {
+        $this->output->writeln($text ?? 'Press any key to continue...');
+
+        $question = new Question('');
+        $question->setHidden(true);
+        $question->setHiddenFallback(false);
+        $question->setValidator(fn ($answer) => true);
+        (new QuestionHelper())->ask($this->input, $this->output, $question);
+    }
+
+
     protected function clear(): void
     {
         system('clear');
