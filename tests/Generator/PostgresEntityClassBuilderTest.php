@@ -6,15 +6,14 @@ use Composite\DB\ConnectionManager;
 use Composite\Sync\Generator\EntityClassBuilder;
 use Composite\Sync\Generator\EnumClassBuilder;
 use Composite\Sync\Providers\PostgreSQL\PgSQLParser;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class PostgresEntityClassBuilderTest extends \PHPUnit\Framework\TestCase
 {
     const CONNECTION_NAME = 'postgres';
     const TABLE_NAME = 'test_table';
 
-    /**
-     * @dataProvider sql_dataProvider
-     */
+    #[DataProvider('sql_dataProvider')]
     public function test_generate(
         array $initQueries,
         string $entityClass,

@@ -5,13 +5,13 @@ namespace Composite\Sync\Commands;
 use Composer\Autoload\ClassLoader;
 use Composite\DB\Attributes\Table;
 use Composite\Sync\Attributes\SkipMigration;
+use Composite\Sync\Helpers\ClassFileLocator;
 use Composite\Sync\Helpers\ConsoleLogger;
 use Composite\Sync\Migration\MigrationsManager;
 use Composite\Sync\Helpers\CommandHelper;
 use Composite\DB\TableConfig;
 use Composite\Entity\AbstractEntity;
 use Composite\Entity\Exceptions\EntityException;
-use Laminas\File\ClassFileLocator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -108,29 +108,24 @@ class MigrateCommand extends Command
         }
 
         foreach ($dirs as $dir) {
-            $locator = new ClassFileLocator($dir);
-            foreach ($locator as $file) {
-                foreach ($file->getClasses() as $class) {
-                    if (!is_subclass_of($class, AbstractEntity::class)) {
-                        continue;
-                    }
-                    $schema = $class::schema();
-                    if ($schema->getFirstAttributeByClass(SkipMigration::class)) {
-                        continue;
-                    }
-                    if (!$schema->getFirstAttributeByClass(Table::class)) {
-                        continue;
-                    }
-                    try {
-                        $tableConfig = TableConfig::fromEntitySchema($schema);
-                    } catch (EntityException) {
-                        continue;
-                    }
-                    if ($onlyConnectionName && $tableConfig->connectionName !== $onlyConnectionName) {
-                        continue;
-                    }
-                    $result[] = $class;
+            $locator = new ClassFileLocator();
+            foreach ($locator->findClasses($dir, AbstractEntity::class) as $class) {
+                $schema = $class::schema();
+                if ($schema->getFirstAttributeByClass(SkipMigration::class)) {
+                    continue;
                 }
+                if (!$schema->getFirstAttributeByClass(Table::class)) {
+                    continue;
+                }
+                try {
+                    $tableConfig = TableConfig::fromEntitySchema($schema);
+                } catch (EntityException) {
+                    continue;
+                }
+                if ($onlyConnectionName && $tableConfig->connectionName !== $onlyConnectionName) {
+                    continue;
+                }
+                $result[] = $class;
             }
         }
         return $result;

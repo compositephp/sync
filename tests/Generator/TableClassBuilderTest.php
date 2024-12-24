@@ -5,12 +5,11 @@ namespace Composite\Sync\Tests\Generator;
 use Composite\Sync\Generator\TableClassBuilder;
 use Composite\Sync\Tests\TestStand\Entities\TestAutoincrementEntity;
 use Composite\Sync\Tests\TestStand\Entities\TestCompositeEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TableClassBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider classBuilder_dataProvider
-     */
+    #[DataProvider('classBuilder_dataProvider')]
     public function test_getFileContent(string $tableClassName, string $entityClassName, $expectedOutput)
     {
         $classBuilder = new TableClassBuilder(

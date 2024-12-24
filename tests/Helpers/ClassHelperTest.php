@@ -3,13 +3,12 @@
 namespace Composite\Sync\Tests\Helpers;
 
 use Composite\Sync\Helpers\ClassHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ClassHelperTest extends TestCase
 {
-    /**
-     * @dataProvider extractNamespace_dataProvider
-     */
+    #[DataProvider('extractNamespace_dataProvider')]
     public function test_extractNamespace(string $name, string $expected): void
     {
         $result = ClassHelper::extractNamespace($name);
@@ -25,9 +24,7 @@ class ClassHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider extractShortName_dataProvider
-     */
+    #[DataProvider('extractShortName_dataProvider')]
     public function test_extractShortName(string $name, string $expected): void
     {
         $result = ClassHelper::extractShortName($name);
@@ -43,9 +40,7 @@ class ClassHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider normalizeString_dataProvider
-     */
+    #[DataProvider('normalizeString_dataProvider')]
     public function test_normalizeString(string $input, string $expected): void
     {
         $result = ClassHelper::normalizeString($input);

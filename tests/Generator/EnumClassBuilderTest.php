@@ -3,12 +3,11 @@
 namespace Composite\Sync\Tests\Generator;
 
 use Composite\Sync\Generator\EnumClassBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class EnumClassBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider enumClassBuilder_dataProvider
-     */
+    #[DataProvider('enumClassBuilder_dataProvider')]
     public function test_getFileContent($enumClassName, $cases, $expectedOutput)
     {
         $enumClassBuilder = new EnumClassBuilder($enumClassName, $cases);

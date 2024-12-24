@@ -11,12 +11,11 @@ use Composite\Sync\Tests\TestStand\Entities\TestMigrationEntityV1;
 use Composite\Sync\Tests\TestStand\Entities\TestMigrationEntityV2;
 use Composite\Sync\Tests\TestStand\Tables\TestMySQLTable;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class MigrationManagerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider migrationName_dataProvider
-     */
+    #[DataProvider('migrationName_dataProvider')]
     public function test_buildMigrationName(string $connectionName, array $summaryParts, string $expectedResult)
     {
         $migrationName = MigrationsManager::buildMigrationName($connectionName, $summaryParts);
@@ -58,9 +57,7 @@ final class MigrationManagerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider flow_dataProvider
-     */
+    #[DataProvider('flow_dataProvider')]
     public function test_flow(string $connectionName): void
     {
         $this->cleanVersionTable($connectionName);

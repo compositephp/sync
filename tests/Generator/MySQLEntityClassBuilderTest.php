@@ -5,12 +5,11 @@ namespace Composite\Sync\Tests\Generator;
 use Composite\Sync\Generator\EntityClassBuilder;
 use Composite\Sync\Generator\EnumClassBuilder;
 use Composite\Sync\Providers\MySQL\MySQLParser;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class MySQLEntityClassBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider sql_dataProvider
-     */
+    #[DataProvider('sql_dataProvider')]
     public function test_generate(
         string $tableName,
         string $sqlQuery,

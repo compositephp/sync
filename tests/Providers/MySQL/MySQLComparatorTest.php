@@ -5,6 +5,7 @@ namespace Composite\Sync\Tests\Providers\MySQL;
 use Composite\DB\Traits\SoftDelete;
 use Composite\DB\Traits\UpdatedAt;
 use Composite\Sync\Attributes\SkipMigration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Composite\DB\Attributes\{PrimaryKey, Table};
 use Composite\Sync\Providers\MySQL\MySQLComparator;
 use Composite\Sync\Providers\MySQL\MySQLIndex;
@@ -608,9 +609,7 @@ final class MySQLComparatorTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider run_dataProvider
-     */
+    #[DataProvider('run_dataProvider')]
     public function test_run(
         AbstractEntity $entity,
         ?string $sql,

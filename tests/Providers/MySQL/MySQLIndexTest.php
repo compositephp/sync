@@ -2,11 +2,10 @@
 
 namespace Composite\Sync\Tests\Providers\MySQL;
 
-use Composite\Sync\Providers\MySQL\MySQLColumn;
-use Composite\Sync\Providers\MySQL\MySQLColumnType;
+use Composite\Sync\Helpers\SQLParser;
 use Composite\Sync\Providers\MySQL\MySQLIndex;
 use Composite\Sync\Providers\MySQL\MySQLIndexType;
-use iamcal\SQLParser;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
 {
@@ -109,9 +108,7 @@ final class MySQLIndexTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider index_dataProvider
-     */
+    #[DataProvider('index_dataProvider')]
     public function testParseSQLColumn(string $sql, MySQLIndex $expected): void
     {
         $tableSQL = "CREATE TABLE Test ($sql)";

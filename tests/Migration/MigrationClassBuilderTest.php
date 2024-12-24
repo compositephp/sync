@@ -3,12 +3,11 @@
 namespace Composite\Sync\Tests\Migration;
 
 use Composite\Sync\Migration\MigrationClassBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class MigrationClassBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider migrationName_dataProvider
-     */
+    #[DataProvider('migrationName_dataProvider')]
     public function test_buildMigrationName(string $connectionName, array $summaryParts, array $upQueries, array $downQueries, string $expectedResult)
     {
         $builder = new MigrationClassBuilder(

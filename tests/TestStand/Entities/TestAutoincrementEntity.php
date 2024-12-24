@@ -2,11 +2,12 @@
 
 namespace Composite\Sync\Tests\TestStand\Entities;
 
+use Composite\Entity\AbstractEntity;
 use Composite\DB\Attributes\{PrimaryKey};
 use Composite\DB\Attributes\Table;
 
 #[Table(connection: 'mysql', name: 'TestAutoincrement')]
-class TestAutoincrementEntity extends \Composite\Entity\AbstractEntity
+class TestAutoincrementEntity extends AbstractEntity
 {
     #[PrimaryKey(autoIncrement: true)]
     public readonly int $id;

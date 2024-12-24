@@ -2,9 +2,10 @@
 
 namespace Composite\Sync\Tests\Providers\MySQL;
 
+use Composite\Sync\Helpers\SQLParser;
 use Composite\Sync\Providers\MySQL\MySQLColumn;
 use Composite\Sync\Providers\MySQL\MySQLColumnType;
-use iamcal\SQLParser;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class MySQLColumnTest extends \PHPUnit\Framework\TestCase
 {
@@ -610,9 +611,7 @@ final class MySQLColumnTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider sqlColumn_DataProvider
-     */
+    #[DataProvider('sqlColumn_DataProvider')]
     public function test_parseSQLColumn(string $sql, MySQLColumn $expected): void
     {
         $tableSQL = "CREATE TABLE Test ($sql)";
